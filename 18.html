@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>С 18-летием, Вика! 🎉🍌</title>
+    <!-- Подключаем Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключаем Tone.js для синтезированных праздничных звуков без внешних файлов -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Шрифты: Fredoka / Rubik / Inter для сочного мультяшного и современного стиля -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Rubik:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --minion-yellow: #FFD93D;
+            --minion-yellow-dark: #F5B700;
+            --minion-blue: #1D5D9B;
+            --minion-denim: #143F6B;
+            --neon-pink: #FF3385;
+            --neon-purple: #8A2BE2;
+            --bg-deep: #0B1021;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-deep);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Rubik', sans-serif;
+        }
+
+        /* Динамический анимированный фон */
+        .bg-party-gradient {
+            background: radial-gradient(circle at 15% 15%, rgba(255, 217, 61, 0.22) 0%, transparent 45%),
+                        radial-gradient(circle at 85% 30%, rgba(255, 51, 133, 0.22) 0%, transparent 45%),
+                        radial-gradient(circle at 50% 80%, rgba(29, 93, 155, 0.35) 0%, transparent 55%),
+                        linear-gradient(180deg, #0B1021 0%, #121A36 50%, #0E1329 100%);
+        }
+
+        /* Glassmorphism карточки */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .glass-yellow {
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.2), rgba(245, 183, 0, 0.08));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1.5px solid rgba(255, 217, 61, 0.45);
+        }
+
+        /* Анимация тряски при неверном пароле */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            15% { transform: translateX(-12px) rotate(-2deg); }
+            30% { transform: translateX(10px) rotate(2deg); }
+            45% { transform: translateX(-8px) rotate(-1deg); }
+            60% { transform: translateX(8px) rotate(1deg); }
+            75% { transform: translateX(-4px); }
+        }
+        .animate-shake {
+            animation: shake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        /* Плавное парение (Float) */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        /* Прыжок хомяка при нажатии */
+        @keyframes hamsterBounce {
+            0% { transform: scale(1) rotate(0deg); }
+            30% { transform: scale(1.22, 0.82) translateY(8px); }
+            55% { transform: scale(0.92, 1.15) translateY(-22px) rotate(-6deg); }
+            75% { transform: scale(1.06, 0.96) translateY(-6px) rotate(5deg); }
+            100% { transform: scale(1) translateY(0) rotate(0deg); }
+        }
+        .hamster-jump {
+            animation: hamsterBounce 0.65s cubic-bezier(0.28, 0.84, 0.42, 1);
+        }
+
+        /* Пламя свечи */
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
+            25% { transform: scale(1.08, 0.94) rotate(2deg); opacity: 0.92; }
+            50% { transform: scale(0.95, 1.06) rotate(-1deg); opacity: 1; }
+            75% { transform: scale(1.05, 0.96) rotate(3deg); opacity: 0.95; }
+        }
+        .candle-flame {
+            transform-origin: bottom center;
+            animation: flicker 0.9s infinite ease-in-out;
+        }
+
+        /* Дымок после задувания свечи */
+        @keyframes smokeRise {
+            0% { opacity: 0.8; transform: translateY(0) scale(0.6); }
+            100% { opacity: 0; transform: translateY(-45px) scale(1.8); }
+        }
+        .smoke-puff {
+            animation: smokeRise 1.4s ease-out forwards;
+        }
+
+        /* Голографическая 3D-карточка */
+        .holo-card-wrapper {
+            perspective: 1000px;
+        }
+        .holo-card {
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .holo-glare {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35), transparent 65%);
+            mix-blend-mode: overlay;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Кнопки цифровой клавиатуры сейфа */
+        .keypad-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 217, 61, 0.35);
+            box-shadow: 0 4px 0 rgba(20, 63, 107, 0.85);
+            transition: all 0.1s ease;
+        }
+        .keypad-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 rgba(20, 63, 107, 0.85);
+            background: rgba(255, 217, 61, 0.35);
+        }
+
+        /* 3D неоновая кнопка */
+        .btn-minion-3d {
+            background: linear-gradient(180deg, #FFE15D 0%, #FFB800 100%);
+            color: #121A36;
+            box-shadow: 0 6px 0 #B37400, 0 12px 24px rgba(255, 184, 0, 0.35);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        .btn-minion-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #B37400, 0 6px 12px rgba(255, 184, 0, 0.3);
+        }
+
+        /* Canvas поверх экрана для салюта и бананов */
+        #fx-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 60;
+        }
+
+        /* Раскрывающиеся створки сейфа при разблокировке */
+        .safe-door-transition {
+            transition: transform 0.9s cubic-bezier(0.7, 0, 0.2, 1), opacity 0.7s ease;
+        }
+        .safe-unlocked {
+            transform: scale(1.18);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Пульсирующее свечение вокруг хомяка */
+        .hamster-glow {
+            box-shadow: 0 0 30px rgba(255, 217, 61, 0.45), 0 0 60px rgba(255, 51, 133, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-party-gradient min-h-screen">
+
+    <!-- Полноэкранный Canvas для конфетти, бананов и салюта -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- ===================================================================== -->
+    <!-- 1. ЭКРАН БЛОКИРОВКИ (СЕКРЕТНЫЙ СЕЙФ ЛАБОРАТОРИИ ГРЮ)                  -->
+    <!-- ===================================================================== -->
+    <section id="lock-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-between px-5 py-6 bg-party-gradient safe-door-transition overflow-y-auto">
+        <!-- Верхняя плашка секретности -->
+        <div class="w-full max-w-sm flex items-center justify-between glass-card rounded-full px-4 py-2 text-xs font-bold tracking-wider uppercase text-yellow-300">
+            <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                GRU LAB • TOP SECRET
+            </span>
+            <span>LVL 18 ACCESS</span>
+        </div>
+
+        <!-- Центральный блок сейфа с живым миньоном -->
+        <div id="safe-box" class="w-full max-w-sm flex flex-col items-center my-auto py-2">
+            <!-- Мини-миньон охранник сейфа (SVG с живым глазом) -->
+            <div class="relative mb-3">
+                <svg id="guard-minion" width="118" height="128" viewBox="0 0 120 130" class="drop-shadow-xl">
+                    <!-- Тело миньона -->
+                    <rect x="22" y="20" width="76" height="96" rx="38" fill="#FFD93D" stroke="#E0A800" stroke-width="2"/>
+                    <!-- Волоски -->
+                    <path d="M52 20 Q48 8 42 10 M60 20 Q60 5 60 8 M68 20 Q72 8 78 10" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- Комбинезон -->
+                    <path d="M22 76 H98 V86 C98 105 82 116 60 116 C38 116 22 105 22 86 Z" fill="#1D5D9B"/>
+                    <rect x="36" y="66" width="48" height="24" rx="4" fill="#1D5D9B"/>
+                    <!-- Лямки -->
+                    <line x1="25" y1="62" x2="40" y2="72" stroke="#143F6B" stroke-width="7" stroke-linecap="round"/>
+                    <line x1="95" y1="62" x2="80" y2="72" stroke="#143F6B" stroke-width="7" stroke-linecap="round"/>
+                    <circle cx="40" cy="72" r="3" fill="#111"/>
+                    <circle cx="80" cy="72" r="3" fill="#111"/>
+                    <!-- Ремешок очков -->
+                    <rect x="20" y="42" width="80" height="11" rx="3" fill="#2A2D34"/>
+                    <!-- Очко (одноглазый Стюарт) -->
+                    <circle cx="60" cy="48" r="21" fill="#A0AAB5" stroke="#5C6470" stroke-width="3"/>
+                    <circle cx="60" cy="48" r="15" fill="#FFFFFF"/>
+                    <!-- Зрачок, который двигается -->
+                    <g id="guard-pupil">
+                        <circle cx="60" cy="48" r="7" fill="#6B3E26"/>
+                        <circle cx="60" cy="48" r="3.5" fill="#111111"/>
+                        <circle cx="62.5" cy="45.5" r="2" fill="#FFFFFF"/>
+                    </g>
+                    <!-- Рот (меняется при ошибке) -->
+                    <path id="guard-mouth" d="M48 96 Q60 103 72 96" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+                <!-- Облачко фразы миньона -->
+                <div id="minion-speech" class="absolute -right-14 top-1 bg-white text-slate-900 font-display font-extrabold text-xs px-3 py-1.5 rounded-2xl rounded-bl-none shadow-lg transition-all duration-200">
+                    Bello, Вика! 👋
+                </div>
+            </div>
+
+            <h1 class="font-display text-2xl sm:text-3xl font-black text-center text-white tracking-tight mb-1">
+                СЕКРЕТНЫЙ СЕЙФ <span class="text-yellow-300">#18</span>
+            </h1>
+            <p id="lock-subtitle" class="text-xs sm:text-sm text-blue-200 text-center mb-4 px-2">
+                Введи секретный 3-значный код доступа, чтобы открыть сюрприз!
+            </p>
+
+            <!-- Индикаторы 3 цифр -->
+            <div class="flex items-center justify-center gap-4 mb-5">
+                <div id="dot-0" class="w-12 h-14 rounded-2xl glass-card flex items-center justify-center font-display text-2xl font-black text-yellow-300 border-2 border-yellow-400/30 transition-all">•</div>
+                <div id="dot-1" class="w-12 h-14 rounded-2xl glass-card flex items-center justify-center font-display text-2xl font-black text-yellow-300 border-2 border-yellow-400/30 transition-all">•</div>
+                <div id="dot-2" class="w-12 h-14 rounded-2xl glass-card flex items-center justify-center font-display text-2xl font-black text-yellow-300 border-2 border-yellow-400/30 transition-all">•</div>
+            </div>
+
+            <!-- Цифровая клавиатура -->
+            <div class="grid grid-cols-3 gap-2.5 w-full max-w-[270px]">
+                <button type="button" data-num="1" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">1</button>
+                <button type="button" data-num="2" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">2</button>
+                <button type="button" data-num="3" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">3</button>
+                <button type="button" data-num="4" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">4</button>
+                <button type="button" data-num="5" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">5</button>
+                <button type="button" data-num="6" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">6</button>
+                <button type="button" data-num="7" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">7</button>
+                <button type="button" data-num="8" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">8</button>
+                <button type="button" data-num="9" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">9</button>
+                <button type="button" id="btn-hint" class="keypad-btn h-14 rounded-2xl font-display text-sm font-bold text-yellow-300 flex items-center justify-center">🍌?</button>
+                <button type="button" data-num="0" class="keypad-btn h-14 rounded-2xl font-display text-2xl font-bold text-white">0</button>
+                <button type="button" id="btn-del" class="keypad-btn h-14 rounded-2xl font-display text-lg font-bold text-pink-400 flex items-center justify-center">⌫</button>
+            </div>
+        </div>
+
+        <!-- Подсказка внизу -->
+        <p id="hint-text" class="text-xs text-center text-slate-400 min-h-[1.25rem] transition-opacity">
+            Нажми «🍌?», если нужна секретная подсказка миньона
+        </p>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 2. ОСНОВНОЙ ПРАЗДНИЧНЫЙ КОНТЕНТ (ОТКРЫВАЕТСЯ ПОСЛЕ ВВОДА КОДА)        -->
+    <!-- ===================================================================== -->
+    <main id="main-content" class="hidden relative z-10 max-w-md mx-auto px-4 pt-6 pb-20 space-y-8">
+
+        <!-- HERO-БЛОК: ВИКА 18 + БЕЛЫЙ ХОМЯК-МЕМ + МИНЬОНЫ -->
+        <section class="relative pt-2 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-yellow text-yellow-300 font-display font-bold text-xs uppercase tracking-widest mb-3 shadow-lg">
+                <span>🎉 СОВЕРШЕННОЛЕТИЕ LEVEL UP</span>
+            </div>
+
+            <h1 class="font-display text-4xl sm:text-5xl font-black leading-none tracking-tight mb-2">
+                С ДНЁМ РОЖДЕНИЯ, <br>
+                <span class="bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 bg-clip-text text-transparent drop-shadow">
+                    ВИКА! ✨
+                </span>
+            </h1>
+            <p class="text-sm sm:text-base text-blue-100/90 font-medium mb-5">
+                Тебе официально <span class="text-yellow-300 font-extrabold">18 лет</span>! Теперь можно всё (и даже чуточку больше) 🍌👑
+            </p>
+
+            <!-- ГЛАВНАЯ СЦЕНА: Тот самый белый хомяк-мем + Миньоны -->
+            <div class="relative glass-card rounded-3xl p-5 pt-6 overflow-visible">
+                <!-- Декоративные бантики и звезды -->
+                <div class="absolute -top-4 -left-2 text-3xl animate-float">🎈</div>
+                <div class="absolute -top-4 -right-2 text-3xl animate-float" style="animation-delay: 1s;">🥳</div>
+
+                <div class="flex items-end justify-center gap-2 sm:gap-3">
+                    <!-- Левый миньон (Боб с плюшевым мишкой/бананом) -->
+                    <div class="w-24 flex-shrink-0 animate-float" style="animation-delay: 0.4s;">
+                        <svg viewBox="0 0 110 135" class="w-full h-auto drop-shadow-lg">
+                            <!-- Праздничный колпак -->
+                            <polygon points="55,2 36,30 74,30" fill="#FF3385"/>
+                            <circle cx="55" cy="2" r="5" fill="#FFD93D"/>
+                            <!-- Тело -->
+                            <rect x="20" y="28" width="70" height="88" rx="35" fill="#FFD93D"/>
+                            <!-- Комбинезон -->
+                            <path d="M20 78 H90 V86 C90 104 75 116 55 116 C35 116 20 104 20 86 Z" fill="#1D5D9B"/>
+                            <rect x="33" y="68" width="44" height="22" rx="4" fill="#1D5D9B"/>
+                            <!-- Очки (2 глаза) -->
+                            <rect x="18" y="46" width="74" height="10" fill="#2A2D34"/>
+                            <circle cx="42" cy="51" r="14" fill="#A0AAB5" stroke="#5C6470" stroke-width="2.5"/>
+                            <circle cx="42" cy="51" r="10" fill="#FFF"/>
+                            <circle cx="44" cy="51" r="4.5" fill="#4A2E1B"/>
+                            <circle cx="68" cy="51" r="14" fill="#A0AAB5" stroke="#5C6470" stroke-width="2.5"/>
+                            <circle cx="68" cy="51" r="10" fill="#FFF"/>
+                            <circle cx="66" cy="51" r="4.5" fill="#2E7D32"/>
+                            <!-- Улыбка -->
+                            <path d="M43 92 Q55 104 67 92" stroke="#111" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
+                    <!-- ЦЕНТРАЛЬНЫЙ ГЕРОЙ: Тот самый белый хомяк-мем с тортом! -->
+                    <div class="relative flex flex-col items-center z-10">
+                        <button id="hamster-btn" type="button" aria-label="Погладить праздничного хомяка" class="relative group focus:outline-none">
+                            <div class="w-36 h-40 sm:w-40 sm:h-44 rounded-3xl bg-white p-1.5 hamster-glow border-4 border-yellow-300 overflow-hidden shadow-2xl transition-transform">
+                                <img id="hamster-img" src="image_4ad9eb.png" alt="Праздничный белый хомяк с тортом" class="w-full h-full object-contain">
+                            </div>
+                            <!-- Бейдж интерактивности -->
+                            <span id="hamster-badge" class="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-pink-500 text-white font-display font-extrabold text-[11px] px-3 py-1 rounded-full shadow-md">
+                                ТАПНИ НА ХОМЯКА! 🐹
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Правый миньон с бананом -->
+                    <div class="w-24 flex-shrink-0 animate-float" style="animation-delay: 1.2s;">
+                        <svg viewBox="0 0 110 135" class="w-full h-auto drop-shadow-lg">
+                            <!-- Праздничный колпак -->
+                            <polygon points="55,2 36,30 74,30" fill="#8A2BE2"/>
+                            <circle cx="55" cy="2" r="5" fill="#FFD93D"/>
+                            <!-- Тело -->
+                            <rect x="20" y="28" width="70" height="88" rx="35" fill="#FFD93D"/>
+                            <!-- Комбинезон -->
+                            <path d="M20 78 H90 V86 C90 104 75 116 55 116 C35 116 20 104 20 86 Z" fill="#1D5D9B"/>
+                            <rect x="33" y="68" width="44" height="22" rx="4" fill="#1D5D9B"/>
+                            <!-- Очко (1 глаз) -->
+                            <rect x="18" y="46" width="74" height="10" fill="#2A2D34"/>
+                            <circle cx="55" cy="51" r="18" fill="#A0AAB5" stroke="#5C6470" stroke-width="2.5"/>
+                            <circle cx="55" cy="51" r="13" fill="#FFF"/>
+                            <circle cx="55" cy="51" r="6" fill="#6B3E26"/>
+                            <circle cx="57" cy="49" r="2" fill="#FFF"/>
+                            <!-- Веселый рот -->
+                            <path d="M44 90 Q55 103 66 90 Z" fill="#7A1C1C"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Счетчик тапов по хомяку и фраза -->
+                <div class="mt-6 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-blue-200">
+                    <span id="hamster-quote" class="font-semibold text-yellow-200 text-left">«Вика, с 18-летием! Держи тортик!»</span>
+                    <span class="bg-white/10 px-2.5 py-1 rounded-full font-display font-bold text-white shrink-0 ml-2">
+                        Тапов: <span id="hamster-count" class="text-yellow-300">0</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- БЛОК 2: ИНТЕРАКТИВНАЯ ГОЛОГРАФИЧЕСКАЯ 3D-ОТКРЫТКА -->
+        <section class="holo-card-wrapper">
+            <div id="holo-card" class="holo-card glass-yellow rounded-3xl p-6 shadow-2xl">
+                <div id="holo-glare" class="holo-glare"></div>
+
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-display font-extrabold uppercase tracking-wider text-yellow-300 bg-black/30 px-3 py-1 rounded-full">
+                        VIP PASS • 18 YEARS
+                    </span>
+                    <span class="text-xl">🍌✨</span>
+                </div>
+
+                <h2 class="font-display text-2xl font-black text-white mb-3">
+                    Викуля, ты — космос! 🚀
+                </h2>
+
+                <p class="text-sm sm:text-base text-white/95 leading-relaxed mb-4">
+                    18 лет — это официальный старт самых ярких приключений, крутых мечт и абсолютной свободы! Пусть каждый твой день будет таким же солнечным и веселым, как вечеринка миньонов, а улыбка сияет ярче всех салютов.
+                </p>
+
+                <div class="flex items-center justify-between text-[11px] text-yellow-200/80 pt-3 border-t border-yellow-300/20">
+                    <span>Поводи пальцем по карточке 👆</span>
+                    <span class="font-display font-bold">EDITION #18</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- БЛОК 3: ИНТЕРАКТИВНЫЙ ТОРТ СО СВЕЧАМИ «18» -->
+        <section class="glass-card rounded-3xl p-6 text-center relative overflow-hidden">
+            <h2 class="font-display text-2xl font-black text-yellow-300 mb-1">
+                ЗАГАДАЙ ЖЕЛАНИЕ! 🎂
+            </h2>
+            <p id="cake-instruction" class="text-xs sm:text-sm text-blue-200 mb-4">
+                Нажми на свечи <span class="font-bold text-white">«1»</span> и <span class="font-bold text-white">«8»</span>, чтобы задуть их!
+            </p>
+
+            <!-- SVG Торт с интерактивными свечами 1 и 8 -->
+            <div class="relative w-64 mx-auto my-2">
+                <svg id="birthday-cake" viewBox="0 0 260 210" class="w-full h-auto overflow-visible">
+                    <!-- Свеча 1 -->
+                    <g id="candle-1" class="cursor-pointer" transform="translate(82, 18)">
+                        <!-- Пламя 1 -->
+                        <g id="flame-1" class="candle-flame">
+                            <path d="M12 0 C18 10 20 18 12 24 C4 18 6 10 12 0 Z" fill="#FF9800"/>
+                            <path d="M12 6 C15 12 16 17 12 21 C8 17 9 12 12 6 Z" fill="#FFF59D"/>
+                        </g>
+                        <!-- Дымок (скрыт до задувания) -->
+                        <circle id="smoke-1" cx="12" cy="14" r="5" fill="#E2E8F0" opacity="0"/>
+                        <!-- Фитиль -->
+                        <rect x="11" y="23" width="2" height="6" fill="#333"/>
+                        <!-- Цифра 1 -->
+                        <rect x="6" y="29" width="12" height="38" rx="4" fill="#FF3385" stroke="#FFF" stroke-width="2"/>
+                        <path d="M6 36 L14 29" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Свеча 8 -->
+                    <g id="candle-8" class="cursor-pointer" transform="translate(148, 18)">
+                        <!-- Пламя 8 -->
+                        <g id="flame-8" class="candle-flame" style="animation-delay: 0.3s;">
+                            <path d="M14 0 C20 10 22 18 14 24 C6 18 8 10 14 0 Z" fill="#FF9800"/>
+                            <path d="M14 6 C17 12 18 17 14 21 C10 17 11 12 14 6 Z" fill="#FFF59D"/>
+                        </g>
+                        <!-- Дымок -->
+                        <circle id="smoke-8" cx="14" cy="14" r="5" fill="#E2E8F0" opacity="0"/>
+                        <!-- Фитиль -->
+                        <rect x="13" y="23" width="2" height="6" fill="#333"/>
+                        <!-- Цифра 8 -->
+                        <circle cx="14" cy="38" r="9" fill="#FFD93D" stroke="#FFF" stroke-width="2"/>
+                        <circle cx="14" cy="56" r="11" fill="#FFD93D" stroke="#FFF" stroke-width="2"/>
+                        <circle cx="14" cy="38" r="3.5" fill="#121A36"/>
+                        <circle cx="14" cy="56" r="4.5" fill="#121A36"/>
+                    </g>
+
+                    <!-- Подставка торта -->
+                    <ellipse cx="130" cy="186" rx="115" ry="16" fill="#334155"/>
+                    <ellipse cx="130" cy="182" rx="110" ry="13" fill="#CBD5E1"/>
+
+                    <!-- Нижний ярус торта -->
+                    <rect x="35" y="128" width="190" height="52" rx="16" fill="#FF3385"/>
+                    <!-- Глазурь нижнего яруса -->
+                    <path d="M35 138 Q50 155 65 140 Q80 158 95 140 Q110 156 130 140 Q150 158 165 140 Q180 156 195 140 Q210 155 225 138 V128 H35 Z" fill="#FFF8E7"/>
+
+                    <!-- Верхний ярус торта -->
+                    <rect x="55" y="84" width="150" height="46" rx="14" fill="#FFD93D"/>
+                    <!-- Глазурь верхнего яруса -->
+                    <path d="M55 94 Q70 110 85 95 Q100 112 115 95 Q130 110 145 95 Q160 112 175 95 Q190 110 205 94 V84 H55 Z" fill="#FFFFFF"/>
+
+                    <!-- Посыпка на торте -->
+                    <circle cx="80" cy="115" r="3" fill="#FF3385"/>
+                    <circle cx="110" cy="120" r="3" fill="#1D5D9B"/>
+                    <circle cx="145" cy="116" r="3" fill="#8A2BE2"/>
+                    <circle cx="175" cy="121" r="3" fill="#FF3385"/>
+                    <circle cx="65" cy="165" r="3.5" fill="#FFD93D"/>
+                    <circle cx="105" cy="168" r="3.5" fill="#38BDF8"/>
+                    <circle cx="155" cy="166" r="3.5" fill="#FFD93D"/>
+                    <circle cx="195" cy="169" r="3.5" fill="#A855F7"/>
+                </svg>
+            </div>
+
+            <!-- Кнопка повторно зажечь свечи (появляется после задувания) -->
+            <button id="relight-btn" type="button" class="hidden mt-2 text-xs font-bold text-yellow-300 underline">
+                Зажечь свечи снова 🔥
+            </button>
+        </section>
+
+        <!-- БЛОК 4: КНОПКА «БАНАНА-БУМ!» И ГЕНЕРАТОР КОМПЛИМЕНТОВ ДЛЯ ВИКИ -->
+        <section class="glass-card rounded-3xl p-6 text-center">
+            <span class="inline-block text-3xl mb-2">🍌💥</span>
+            <h2 class="font-display text-xl sm:text-2xl font-black text-white mb-2">
+                МИНЬОНСКИЙ ГЕНЕРАТОР ФАКТОВ О ВИКЕ
+            </h2>
+            <p class="text-xs text-blue-200 mb-4">
+                Жми на кнопку — узнай, почему в свои 18 ты просто легенда!
+            </p>
+
+            <!-- Карточка с выпадающим комплиментом -->
+            <div id="compliment-box" class="min-h-[84px] flex items-center justify-center rounded-2xl bg-black/30 border border-yellow-300/30 p-4 mb-5 transition-all">
+                <p id="compliment-text" class="font-display font-bold text-base sm:text-lg text-yellow-300">
+                    «Нажми кнопку ниже для запуска Banana-Boom!»
+                </p>
+            </div>
+
+            <button id="banana-boom-btn" type="button" class="btn-minion-3d w-full py-4 px-6 rounded-2xl font-display font-black text-lg uppercase tracking-wide flex items-center justify-center gap-2">
+                <span>БАНАНА-БУМ!</span>
+                <span class="text-2xl">🍌🎉</span>
+            </button>
+        </section>
+
+        <!-- БЛОК 5: СЕКРЕТНАЯ ПИНЬЯТА-ПОДАРОК (РАСТАПАЙ, ЧТОБЫ ОТКРЫТЬ ФИНАЛ) -->
+        <section class="glass-card rounded-3xl p-6 text-center relative">
+            <h2 class="font-display text-2xl font-black text-pink-400 mb-1">
+                ФИНАЛЬНЫЙ СЮРПРИЗ 🎁
+            </h2>
+            <p id="gift-subtitle" class="text-xs sm:text-sm text-blue-200 mb-4">
+                Постучи по подарку <span id="taps-left" class="font-bold text-yellow-300">5</span> раз, чтобы разбить замок!
+            </p>
+
+            <!-- Прогресс-бар открытия подарка -->
+            <div class="w-full h-3 bg-white/10 rounded-full overflow-hidden mb-5">
+                <div id="gift-progress" class="h-full bg-gradient-to-r from-yellow-300 via-pink-500 to-purple-500 w-0 transition-all duration-200"></div>
+            </div>
+
+            <!-- Интерактивная коробка-сюрприз -->
+            <div id="gift-box-container" class="py-2">
+                <button id="gift-box-btn" type="button" class="relative inline-flex items-center justify-center w-36 h-36 rounded-3xl bg-gradient-to-br from-pink-500 to-purple-700 border-4 border-yellow-300 shadow-2xl transition-transform active:scale-90">
+                    <span class="text-7xl select-none">🎁</span>
+                    <span class="absolute -top-3 -right-3 bg-yellow-300 text-slate-900 font-display font-black text-xs px-2.5 py-1 rounded-full shadow">
+                        ТАПАЙ!
+                    </span>
+                </button>
+            </div>
+
+            <!-- Скрытое финальное поздравление (раскрывается после 5 тапов) -->
+            <div id="final-message" class="hidden text-left space-y-4 pt-2">
+                <div class="flex items-center gap-3 bg-white/10 p-3 rounded-2xl">
+                    <img src="image_4ad9eb.png" alt="Хомяк радуется" class="w-16 h-16 rounded-2xl bg-white object-contain p-1 border-2 border-yellow-300 shrink-0">
+                    <div>
+                        <p class="font-display font-black text-yellow-300 text-base">УРААА! С 18-ЛЕТИЕМ, ВИКА!</p>
+                        <p class="text-xs text-blue-200">Хомяк и вся банда миньонов в восторге!</p>
+                    </div>
+                </div>
+
+                <div class="bg-black/25 rounded-2xl p-4 border border-white/10 space-y-2.5 text-sm sm:text-base text-white/95 leading-relaxed">
+                    <p>
+                        Дорогая <span class="text-yellow-300 font-bold">Вика</span>! С твоим восемнадцатилетием! 🥂✨
+                    </p>
+                    <p>
+                        Пусть в твоей жизни всегда будет место для безбашенного веселья, верных людей рядом, смелых идей и моментов, от которых захватывает дух.
+                    </p>
+                    <p>
+                        Никогда не теряй своего крутого чувства юмора, оставайся такой же яркой, искренней и неповторимой. Весь мир сегодня у твоих ног — зажигай на максимум! 💖🔥
+                    </p>
+                </div>
+
+                <button id="mega-firework-btn" type="button" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 font-display font-extrabold text-sm uppercase tracking-wider text-white shadow-lg active:scale-95 transition-transform">
+                    ЕЩЁ САЛЮТ В ЧЕСТЬ ВИКИ! 🎆
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- СКРИПТЫ: ЗВУК, ПАРОЛЬ, CANVAS-САЛЮТ, ИНТЕРАКТИВНЫЕ АНИМАЦИИ          -->
+    <!-- ===================================================================== -->
+    <script>
+        /**
+         * ===================================================================
+         * НАСТРОЙКА ПАРОЛЯ СЕЙФА:
+         * По умолчанию установлен код "018" (в честь 18-летия).
+         * Чтобы поменять пароль на любой другой 3-значный код, просто измени
+         * значение константы SECRET_CODE ниже (например, "777" или "123").
+         * ===================================================================
+         */
+        const SECRET_CODE = "018";
+
+        // Состояние ввода кода
+        let enteredCode = "";
+        let audioStarted = false;
+
+        // Инициализация синтезатора звуков Tone.js (работает без внешних аудиофайлов)
+        let synth = null;
+        function initAudio() {
+            if (audioStarted) return;
+            try {
+                Tone.start();
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "triangle" },
+                    envelope: { attack: 0.02, decay: 0.15, sustain: 0.1, release: 0.4 }
+                }).toDestination();
+                synth.volume.value = -8;
+                audioStarted = true;
+            } catch (e) {
+                console.warn("Audio init skipped:", e);
+            }
+        }
+
+        function playTone(note, duration = "16n") {
+            if (!synth) return;
+            try {
+                synth.triggerAttackRelease(note, duration);
+            } catch (e) {}
+        }
+
+        function playFanfare() {
+            if (!synth) return;
+            try {
+                const now = Tone.now();
+                synth.triggerAttackRelease("C5", "8n", now);
+                synth.triggerAttackRelease("E5", "8n", now + 0.12);
+                synth.triggerAttackRelease("G5", "8n", now + 0.24);
+                synth.triggerAttackRelease(["C6", "E6", "G6"], "2n", now + 0.38);
+            } catch (e) {}
+        }
+
+        function playErrorSound() {
+            if (!synth) return;
+            try {
+                const now = Tone.now();
+                synth.triggerAttackRelease("E3", "8n", now);
+                synth.triggerAttackRelease("Bb2", "4n", now + 0.14);
+            } catch (e) {}
+        }
+
+        // ===================================================================
+        // CANVAS ENGINE: САЛЮТ ИЗ КОНФЕТТИ, БАНАНОВ, СЕРДЕЧЕК И ЗВЕЗД
+        // ===================================================================
+        const canvas = document.getElementById("fx-canvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        const EMOJI_ITEMS = ["🍌", "🎉", "✨", "💖", "🥳", "👑", "🎂"];
+        const CONFETTI_COLORS = ["#FFD93D", "#FF3385", "#38BDF8", "#A855F7", "#4ADE80", "#FFFFFF"];
+
+        function spawnBurst(x, y, count = 45, mode = "mixed") {
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 3 + Math.random() * 9;
+                const isEmoji = mode === "bananas"
+                    ? true
+                    : (mode === "mixed" && Math.random() < 0.35);
+
+                const emoji = mode === "bananas"
+                    ? (Math.random() < 0.75 ? "🍌" : "🐹")
+                    : EMOJI_ITEMS[Math.floor(Math.random() * EMOJI_ITEMS.length)];
+
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 3,
+                    gravity: 0.18 + Math.random() * 0.08,
+                    drag: 0.97,
+                    size: isEmoji ? (20 + Math.random() * 14) : (6 + Math.random() * 6),
+                    color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+                    rotation: Math.random() * 360,
+                    vRot: (Math.random() - 0.5) * 12,
+                    alpha: 1,
+                    decay: 0.012 + Math.random() * 0.01,
+                    isEmoji: isEmoji,
+                    emoji: emoji
+                });
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.vx *= p.drag;
+                p.vy *= p.drag;
+                p.vy += p.gravity;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rotation += p.vRot;
+                p.alpha -= p.decay;
+
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, p.alpha);
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+
+                if (p.isEmoji) {
+                    ctx.font = `${p.size}px sans-serif`;
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(p.emoji, 0, 0);
+                } else {
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+                }
+                ctx.restore();
+            }
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        // ===================================================================
+        // ЛОГИКА ЭКРАНА БЛОКИРОВКИ (СЕЙФ)
+        // ===================================================================
+        const dots = [
+            document.getElementById("dot-0"),
+            document.getElementById("dot-1"),
+            document.getElementById("dot-2")
+        ];
+        const safeBox = document.getElementById("safe-box");
+        const minionSpeech = document.getElementById("minion-speech");
+        const guardMouth = document.getElementById("guard-mouth");
+        const guardPupil = document.getElementById("guard-pupil");
+
+        // Зрачок миньона следит за пальцем/нажатием
+        document.addEventListener("pointermove", (e) => {
+            if (!guardPupil) return;
+            const rect = guardPupil.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = Math.max(-5, Math.min(5, (e.clientX - cx) / 35));
+            const dy = Math.max(-5, Math.min(5, (e.clientY - cy) / 35));
+            guardPupil.setAttribute("transform", `translate(${dx}, ${dy})`);
+        });
+
+        function updateDots() {
+            for (let i = 0; i < 3; i++) {
+                if (enteredCode[i] !== undefined) {
+                    dots[i].textContent = enteredCode[i];
+                    dots[i].classList.add("border-yellow-300", "bg-yellow-300/20", "scale-105");
+                } else {
+                    dots[i].textContent = "•";
+                    dots[i].classList.remove("border-yellow-300", "bg-yellow-300/20", "scale-105");
+                }
+            }
+        }
+
+        function handleDigitInput(digit) {
+            initAudio();
+            if (enteredCode.length >= 3) return;
+
+            enteredCode += digit;
+            updateDots();
+            playTone("G4", "32n");
+
+            if (enteredCode.length === 3) {
+                setTimeout(checkCode, 180);
+            }
+        }
+
+        function checkCode() {
+            if (enteredCode === SECRET_CODE) {
+                // Успех! Открываем сейф!
+                playFanfare();
+                minionSpeech.textContent = "BANANA!! УРА! 🎉";
+                minionSpeech.classList.add("bg-yellow-300");
+                guardMouth.setAttribute("d", "M45 92 Q60 110 75 92 Z");
+
+                // Мощный салют из центра экрана
+                spawnBurst(window.innerWidth / 2, window.innerHeight / 2, 85, "mixed");
+
+                setTimeout(() => {
+                    const lockScreen = document.getElementById("lock-screen");
+                    const mainContent = document.getElementById("main-content");
+                    lockScreen.classList.add("safe-unlocked");
+                    mainContent.classList.remove("hidden");
+
+                    setTimeout(() => {
+                        lockScreen.style.display = "none";
+                        // Дополнительный салют сверху после открытия
+                        spawnBurst(window.innerWidth * 0.3, window.innerHeight * 0.25, 45, "mixed");
+                        spawnBurst(window.innerWidth * 0.7, window.innerHeight * 0.25, 45, "mixed");
+                    }, 750);
+                }, 400);
+            } else {
+                // Ошибка: тряска и реакция миньона
+                playErrorSound();
+                safeBox.classList.remove("animate-shake");
+                void safeBox.offsetWidth; // перезапуск анимации
+                safeBox.classList.add("animate-shake");
+
+                minionSpeech.textContent = "No-no-no! 🙈";
+                guardMouth.setAttribute("d", "M48 102 Q60 93 72 102");
+
+                dots.forEach(d => d.classList.add("border-red-500", "text-red-400"));
+
+                setTimeout(() => {
+                    enteredCode = "";
+                    updateDots();
+                    dots.forEach(d => d.classList.remove("border-red-500", "text-red-400"));
+                    minionSpeech.textContent = "Попробуй ещё! 🍌";
+                    guardMouth.setAttribute("d", "M48 96 Q60 103 72 96");
+                }, 650);
+            }
+        }
+
+        // Обработчики кнопок клавиатуры
+        document.querySelectorAll("[data-num]").forEach(btn => {
+            btn.addEventListener("click", () => handleDigitInput(btn.dataset.num));
+        });
+
+        document.getElementById("btn-del").addEventListener("click", () => {
+            initAudio();
+            if (enteredCode.length > 0) {
+                enteredCode = enteredCode.slice(0, -1);
+                updateDots();
+                playTone("C4", "32n");
+            }
+        });
+
+        document.getElementById("btn-hint").addEventListener("click", () => {
+            initAudio();
+            playTone("E5", "16n");
+            const hintEl = document.getElementById("hint-text");
+            hintEl.textContent = `Подсказка: ноль + возраст Вики (${SECRET_CODE}) 😉`;
+            hintEl.classList.remove("text-slate-400");
+            hintEl.classList.add("text-yellow-300", "font-bold");
+        });
+
+        // ===================================================================
+        // ИНТЕРАКТИВНЫЙ БЕЛЫЙ ХОМЯК-МЕМ
+        // ===================================================================
+        const hamsterBtn = document.getElementById("hamster-btn");
+        const hamsterImg = document.getElementById("hamster-img");
+        const hamsterCountEl = document.getElementById("hamster-count");
+        const hamsterQuoteEl = document.getElementById("hamster-quote");
+        let hamsterTaps = 0;
+
+        const HAMSTER_QUOTES = [
+            "«Вика, с 18-летием! Держи тортик!» 🎂",
+            "«ЫЫЫЫ! С ДНЁМ РОЖДЕНИЯ, ВИКА!» 🥳",
+            "«Этот торт только для тебя, именинница!» 🍰",
+            "«18 лет — полёт нормальный! Жуём тортик!» 🐹",
+            "«Ты самая крутая! Хомяк одобряет!» 💖",
+            "«Бананы миньонам, тортик — Вике!» 🍌"
+        ];
+
+        hamsterBtn.addEventListener("click", (e) => {
+            initAudio();
+            hamsterTaps++;
+            hamsterCountEl.textContent = hamsterTaps;
+
+            // Перезапускаем анимацию прыжка
+            hamsterImg.parentElement.classList.remove("hamster-jump");
+            void hamsterImg.parentElement.offsetWidth;
+            hamsterImg.parentElement.classList.add("hamster-jump");
+
+            // Меняем фразу хомяка
+            hamsterQuoteEl.textContent = HAMSTER_QUOTES[hamsterTaps % HAMSTER_QUOTES.length];
+
+            // Звук и мини-взрыв сердечек/конфетти вокруг хомяка
+            const notes = ["C5", "D5", "E5", "G5", "A5"];
+            playTone(notes[hamsterTaps % notes.length], "16n");
+
+            const rect = hamsterBtn.getBoundingClientRect();
+            spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 22, "mixed");
+        });
+
+        // ===================================================================
+        // ГОЛОГРАФИЧЕСКАЯ 3D-КАРТОЧКА (РЕАГИРУЕТ НА ТАЧ И ДВИЖЕНИЕ)
+        // ===================================================================
+        const holoCard = document.getElementById("holo-card");
+        const holoGlare = document.getElementById("holo-glare");
+
+        function handleCardTilt(clientX, clientY) {
+            const rect = holoCard.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            holoCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            holoGlare.style.opacity = "1";
+            holoGlare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0.4), transparent 65%)`;
+        }
+
+        function resetCardTilt() {
+            holoCard.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+            holoGlare.style.opacity = "0";
+        }
+
+        holoCard.addEventListener("pointermove", (e) => handleCardTilt(e.clientX, e.clientY));
+        holoCard.addEventListener("pointerleave", resetCardTilt);
+        holoCard.addEventListener("touchmove", (e) => {
+            if (e.touches.length > 0) {
+                handleCardTilt(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+        holoCard.addEventListener("touchend", resetCardTilt);
+
+        // ===================================================================
+        // ИНТЕРАКТИВНЫЙ ТОРТ СО СВЕЧАМИ «18»
+        // ===================================================================
+        let candle1Lit = true;
+        let candle8Lit = true;
+
+        const candle1 = document.getElementById("candle-1");
+        const candle8 = document.getElementById("candle-8");
+        const flame1 = document.getElementById("flame-1");
+        const flame8 = document.getElementById("flame-8");
+        const smoke1 = document.getElementById("smoke-1");
+        const smoke8 = document.getElementById("smoke-8");
+        const cakeInstruction = document.getElementById("cake-instruction");
+        const relightBtn = document.getElementById("relight-btn");
+
+        function checkCandlesState() {
+            if (!candle1Lit && !candle8Lit) {
+                cakeInstruction.innerHTML = `<span class="text-yellow-300 font-extrabold">Ура! Желание загадано — оно точно сбудется! ✨🎂</span>`;
+                relightBtn.classList.remove("hidden");
+                playFanfare();
+                const cakeRect = document.getElementById("birthday-cake").getBoundingClientRect();
+                spawnBurst(cakeRect.left + cakeRect.width / 2, cakeRect.top + 40, 65, "mixed");
+            }
+        }
+
+        candle1.addEventListener("click", () => {
+            initAudio();
+            if (!candle1Lit) return;
+            candle1Lit = false;
+            flame1.style.display = "none";
+            smoke1.classList.remove("smoke-puff");
+            void smoke1.offsetWidth;
+            smoke1.classList.add("smoke-puff");
+            playTone("A4", "16n");
+            checkCandlesState();
+        });
+
+        candle8.addEventListener("click", () => {
+            initAudio();
+            if (!candle8Lit) return;
+            candle8Lit = false;
+            flame8.style.display = "none";
+            smoke8.classList.remove("smoke-puff");
+            void smoke8.offsetWidth;
+            smoke8.classList.add("smoke-puff");
+            playTone("C5", "16n");
+            checkCandlesState();
+        });
+
+        relightBtn.addEventListener("click", () => {
+            initAudio();
+            candle1Lit = true;
+            candle8Lit = true;
+            flame1.style.display = "block";
+            flame8.style.display = "block";
+            relightBtn.classList.add("hidden");
+            cakeInstruction.innerHTML = `Нажми на свечи <span class="font-bold text-white">«1»</span> и <span class="font-bold text-white">«8»</span>, чтобы задуть их!`;
+            playTone("E5", "16n");
+        });
+
+        // ===================================================================
+        // ГЕНЕРАТОР КОМПЛИМЕНТОВ «БАНАНА-БУМ!»
+        // ===================================================================
+        const COMPLIMENTS = [
+            "Уровень харизмы Вики в 18 лет превышает все нормы лаборатории Грю! 🚀",
+            "Даже одноглазый Стюарт отдал бы Вике свой последний банан! 🍌💛",
+            "Улыбка Вики заряжает позитивом сильнее, чем 1000 миньонов! ⚡",
+            "Официально признано: 18-летняя Вика — главная звезда этой вечеринки! 👑",
+            "С таким чувством юмора и вайбом Вике покорится любая вершина! ✨",
+            "Белый хомяк с тортом подтверждает: Вика — 100 из 10! 🐹🎂",
+            "Впереди у Вики миллион крутых историй, путешествий и побед! 🌍🔥"
+        ];
+        let lastComplimentIdx = -1;
+
+        document.getElementById("banana-boom-btn").addEventListener("click", (e) => {
+            initAudio();
+            let idx;
+            do {
+                idx = Math.floor(Math.random() * COMPLIMENTS.length);
+            } while (idx === lastComplimentIdx);
+            lastComplimentIdx = idx;
+
+            const box = document.getElementById("compliment-box");
+            const text = document.getElementById("compliment-text");
+
+            box.classList.add("scale-95");
+            setTimeout(() => {
+                text.textContent = COMPLIMENTS[idx];
+                box.classList.remove("scale-95");
+            }, 100);
+
+            playTone("G5", "16n");
+            const rect = e.currentTarget.getBoundingClientRect();
+            spawnBurst(rect.left + rect.width / 2, rect.top, 45, "bananas");
+        });
+
+        // ===================================================================
+        // ПИНЬЯТА-ПОДАРОК В КОНЦЕ СТРАНИЦЫ
+        // ===================================================================
+        let giftTaps = 0;
+        const MAX_GIFT_TAPS = 5;
+        const giftBtn = document.getElementById("gift-box-btn");
+        const giftProgress = document.getElementById("gift-progress");
+        const tapsLeftEl = document.getElementById("taps-left");
+
+        giftBtn.addEventListener("click", () => {
+            initAudio();
+            if (giftTaps >= MAX_GIFT_TAPS) return;
+
+            giftTaps++;
+            const percent = (giftTaps / MAX_GIFT_TAPS) * 100;
+            giftProgress.style.width = `${percent}%`;
+            tapsLeftEl.textContent = Math.max(0, MAX_GIFT_TAPS - giftTaps);
+
+            // Тряска коробки при каждом стуке
+            giftBtn.classList.remove("animate-shake");
+            void giftBtn.offsetWidth;
+            giftBtn.classList.add("animate-shake");
+
+            const rect = giftBtn.getBoundingClientRect();
+            spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 18, "mixed");
+
+            const scaleNotes = ["C5", "D5", "E5", "G5", "C6"];
+            playTone(scaleNotes[giftTaps - 1], "16n");
+
+            if (giftTaps === MAX_GIFT_TAPS) {
+                playFanfare();
+                spawnBurst(window.innerWidth / 2, rect.top, 90, "mixed");
+
+                setTimeout(() => {
+                    document.getElementById("gift-box-container").classList.add("hidden");
+                    document.getElementById("gift-subtitle").textContent = "Замок взломан! Читай секретное послание 👇";
+                    document.getElementById("final-message").classList.remove("hidden");
+                }, 250);
+            }
+        });
+
+        document.getElementById("mega-firework-btn").addEventListener("click", () => {
+            initAudio();
+            playFanfare();
+            spawnBurst(window.innerWidth * 0.25, window.innerHeight * 0.4, 50, "mixed");
+            spawnBurst(window.innerWidth * 0.75, window.innerHeight * 0.4, 50, "mixed");
+            spawnBurst(window.innerWidth * 0.5, window.innerHeight * 0.25, 60, "bananas");
+        });
+
+        // Запуск основного цикла анимации частиц при загрузке окна
+        window.onload = function () {
+            animateParticles();
+        };
+    </script>
+</body>
+</html>
